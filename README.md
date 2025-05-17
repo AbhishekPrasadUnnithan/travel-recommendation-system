@@ -36,7 +36,7 @@ A travel accommodation recommendation system built using **Google Places API**, 
 - Added **more cities across India** for a comprehensive dataset.
 - Hotels are filtered and recommended **only based on rating** and optional name search.
 - Google Maps links are provided for each hotel to view their location and details directly.
-- ✅ Uses `config.py` to store API keys, base URLs, city list, and DB paths — improving maintainability and scalability.
+- Uses `config.py` to store API keys, base URLs, city list, and DB paths — improving maintainability and scalability.
 
 ---
 
@@ -57,3 +57,12 @@ Due to restrictions of the Google Places API:
 ```bash
 git clone https://github.com/AbhishekPrasadUnnithan/travel-recommendation-system.git
 cd travel-recommendation-system
+
+2. Create and activate a virtual environment
+
+python -m venv venv
+venv\Scripts\activate  # On Windows
+# Or
+source venv/bin/activate  # On macOS/Linux
+
+
