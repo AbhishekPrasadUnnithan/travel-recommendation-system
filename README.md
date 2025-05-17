@@ -57,12 +57,3 @@ Due to restrictions of the Google Places API:
 ```bash
 git clone https://github.com/AbhishekPrasadUnnithan/travel-recommendation-system.git
 cd travel-recommendation-system
-
-2. Create and activate a virtual environment
-
-python -m venv venv
-venv\Scripts\activate  # On Windows
-# Or
-source venv/bin/activate  # On macOS/Linux
-
-
