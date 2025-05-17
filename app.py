@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
+from config import DATABASE_URL
 
-# Background setup
 def set_background():
     st.markdown(
         """
@@ -25,12 +25,11 @@ def set_background():
 
 set_background()
 
-# Load database
-engine = create_engine("sqlite:///hotels.db")
+# Load database using config
+engine = create_engine(DATABASE_URL)
 
 st.title("Hotel Recommendation System")
 
-# Get city list
 city_list = pd.read_sql("SELECT DISTINCT City FROM hotels", engine)['City'].dropna().tolist()
 
 # Sidebar filters

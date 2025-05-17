@@ -13,6 +13,7 @@ A travel accommodation recommendation system built using **Google Places API**, 
 - Google Maps link for each hotel
 - Clean and intuitive UI built with Streamlit
 - Data stored locally in SQLite using SQLAlchemy
+- Uses `config.py` for centralized configuration management
 
 ---
 
@@ -23,6 +24,8 @@ A travel accommodation recommendation system built using **Google Places API**, 
 - SQLite + SQLAlchemy
 - Pandas
 - Google Places API
+- dotenv for environment variable management
+- Pytest for testing
 
 ---
 
@@ -33,6 +36,7 @@ A travel accommodation recommendation system built using **Google Places API**, 
 - Added **more cities across India** for a comprehensive dataset.
 - Hotels are filtered and recommended **only based on rating** and optional name search.
 - Google Maps links are provided for each hotel to view their location and details directly.
+- ✅ Uses `config.py` to store API keys, base URLs, city list, and DB paths — improving maintainability and scalability.
 
 ---
 

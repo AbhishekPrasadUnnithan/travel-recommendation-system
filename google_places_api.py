@@ -2,27 +2,28 @@ import requests
 import pandas as pd
 from sqlalchemy import create_engine
 import time
-import os
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
-API_KEY = os.getenv("GOOGLE_API_KEY")
+from config import (
+    GOOGLE_API_KEY,
+    GOOGLE_PLACES_API_URL,
+    DEFAULT_RADIUS,
+    MAX_PAGES,
+    DATABASE_URL,
+    DEFAULT_CITIES
+)
 
-# Fetch hotels from Google Places API
-def fetch_all_hotels(city, radius=5000):  # 5 km radius
-    base_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+def fetch_all_hotels(city, radius=DEFAULT_RADIUS):
     params = {
         "query": f"hotels in {city}",
         "radius": radius,
-        "key": API_KEY
+        "key": GOOGLE_API_KEY
     }
 
     hotel_list = []
     page = 1
 
     while True:
-        response = requests.get(base_url, params=params)
+        response = requests.get(GOOGLE_PLACES_API_URL, params=params)
         data = response.json()
         results = data.get("results", [])
 
@@ -42,37 +43,27 @@ def fetch_all_hotels(city, radius=5000):  # 5 km radius
             })
 
         next_token = data.get("next_page_token")
-        if not next_token or page >= 3:
+        if not next_token or page >= MAX_PAGES:
             break
         params = {
             "pagetoken": next_token,
-            "key": API_KEY
+            "key": GOOGLE_API_KEY
         }
         time.sleep(2)
         page += 1
 
     return hotel_list
 
-# Save to SQLite DB
 def save_to_db(all_hotels):
     df = pd.DataFrame(all_hotels)
     print("Saving to hotels.db...")
-    engine = create_engine("sqlite:///hotels.db")
+    engine = create_engine(DATABASE_URL)
     df.to_sql("hotels", engine, if_exists="replace", index=False)
     print("Saved successfully!")
 
-# Main execution
 if __name__ == "__main__":
-    cities = [
-        "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Ahmedabad",
-        "Pune", "Jaipur", "Surat", "Lucknow", "Kanpur", "Nagpur", "Indore", "Thane",
-        "Bhopal", "Visakhapatnam", "Patna", "Vadodara", "Ludhiana", "Agra", "Nashik",
-        "Faridabad", "Meerut", "Rajkot", "Varanasi", "Srinagar", "Amritsar", "Coimbatore",
-        "Madurai", "Jamshedpur", "Kochi", "Trivandrum", "Mangalore", "Guwahati", "Chandigarh"
-    ]
-
     all_hotels = []
-    for city in cities:
+    for city in DEFAULT_CITIES:
         print(f"Fetching hotels in {city}...")
         hotels = fetch_all_hotels(city)
         all_hotels.extend(hotels)
